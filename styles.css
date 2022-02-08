@@ -29,8 +29,8 @@ input {
 }
 
 input:focus {
-  /*border-color: red;*/
-  /*outline: 0 none;*/
+  outline: 0 none;
+  box-shadow: 0 0 5px #36454F;
 }
 
 button {
