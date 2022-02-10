@@ -16,9 +16,23 @@
     let form = document.getElementById('search-field');
     let searchField = document.getElementById('search');
     searchField.addEventListener('keyup', isInputFilled);
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit',  async function(e) {
       let input = getInput(e);
+      let response = await makeRequest(encodeURIComponent(input));
+      if (response !== null) {
+        console.log(response);
+        console.log(response["amiibo"]);
+      }
     });
+    console.log(encodeURIComponent('donkey kong'));
+  }
+
+  function createCard(response) {
+    let data = response['amiibo'][0];
+    let character = data['character'];
+    let series = data['amiiboSeries'];
+    let release = data['release'];
+
   }
 
   function isInputFilled() {
@@ -48,10 +62,11 @@
 
   async function safeGet(url) {
     try {
-      let response = await fetch(url, {method: 'POST'});
+      let response = await fetch(url, {method: 'GET'});
       await statusCheck(response);
       return await response.json();
     } catch (err) {
+      handleError(err);
       console.error(err);
       return null;
     }
