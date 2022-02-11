@@ -12,27 +12,60 @@
   window.addEventListener('load', init);
 
   function init() {
-    console.log('Hello world!');
     let form = document.getElementById('search-field');
     let searchField = document.getElementById('search');
+
     searchField.addEventListener('keyup', isInputFilled);
-    form.addEventListener('submit',  async function(e) {
+    form.addEventListener('submit', async function(e) {
       let input = getInput(e);
       let response = await makeRequest(encodeURIComponent(input));
+      let warning = document.getElementById('warning');
+
       if (response !== null) {
-        console.log(response);
-        console.log(response["amiibo"]);
+        warning.classList.remove('active');
+        clearPage();
+
+        let cardSection = document.getElementById('amiibo');
+        for (const amiibo of response["amiibo"]) {
+          let card = createCard(amiibo);
+          cardSection.appendChild(card);
+        }
       }
     });
-    console.log(encodeURIComponent('donkey kong'));
   }
 
-  function createCard(response) {
-    let data = response['amiibo'][0];
-    let character = data['character'];
-    let series = data['amiiboSeries'];
-    let release = data['release'];
+  function createCard(data) {
+    let card = document.createElement('div');
+    card.classList.add('card');
+    card.classList.add('horizontal-alignment');
 
+    let img = document.createElement('img');
+    img.setAttribute('src', data['image']);
+    img.setAttribute('alt', data['character']);
+    card.appendChild(img);
+
+    let div = document.createElement('div');
+    let headerOne = document.createElement('h1');
+    headerOne.textContent = data['character'];
+    div.appendChild(headerOne);
+
+    let headerTwo = document.createElement('h2');
+    headerTwo.textContent = data['amiiboSeries'];
+    div.appendChild(headerTwo);
+
+    let paragraph = document.createElement('p');
+    paragraph.textContent = 'Release:';
+    div.appendChild(paragraph);
+
+    let list = document.createElement('ul');
+    for (const [country, date] of Object.entries(data['release'])) {
+      let listItem = document.createElement('li');
+      listItem.textContent = `${country}: ${date}`;
+      list.appendChild(listItem)
+    }
+    div.appendChild(list);
+    card.appendChild(div);
+    return card;
   }
 
   function isInputFilled() {
@@ -49,7 +82,6 @@
     if (input !== '') {
       searchField.value = '';
       button.disabled = true;
-      console.log('Input: ', input);
     }
     return input;
   }
@@ -67,7 +99,6 @@
       return await response.json();
     } catch (err) {
       handleError(err);
-      console.error(err);
       return null;
     }
   }
@@ -80,22 +111,20 @@
   }
 
   function handleError(err) {
-    //  TODO: handle the error
+    clearPage();
+    let warning = document.getElementById('warning');
+    warning.classList.add('active');
+
+    let errorMessage = document.createElement('p');
+    errorMessage.textContent = `Full error message: ${err.message}`;
+    if (warning.children.length > 1) {
+      warning.removeChild(warning.lastChild);
+    }
+    warning.append(errorMessage);
   }
 
-  /**
-   * Takes a string and removes any HTML special characters from it
-   * Base code credit: https://stackoverflow.com/questions/6234773/can-i-escape-html-special-chars-in-javascript/18108463
-   * @param {String} text The string to be formatted
-   * @returns {String} The string without HTML special characters
-   */
-  function escapeHTML(text) {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+  function clearPage() {
+    let cardSection = document.getElementById('amiibo');
+    cardSection.innerHTML = '';
   }
-
 })();
