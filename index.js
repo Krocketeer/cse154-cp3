@@ -73,7 +73,7 @@
     for (const [country, date] of Object.entries(data['release'])) {
       let listItem = document.createElement('li');
       listItem.textContent = `${country}: ${date}`;
-      list.appendChild(listItem)
+      list.appendChild(listItem);
     }
     div.appendChild(list);
     card.appendChild(div);
@@ -112,7 +112,7 @@
    * Takes an amiibo name, makes an API call using
    * the safeGet() function
    * @param {String} params Amiibo name from user input
-   * @returns {Promise<any|null|undefined>}
+   * @returns {Promise<JSON|null>} the response of the API call
    */
   function makeRequest(params) {
     const BASE_URL = 'https://www.amiiboapi.com/api/amiibo/';

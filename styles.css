@@ -26,7 +26,7 @@ body,
 
 body,
 .vertical-alignment,
-.horizontal-alignment{
+.horizontal-alignment {
   display: flex;
   justify-content: center;
 }
