@@ -2,9 +2,10 @@
  * Kenny "Ackerson" Le
  * CSE 154 AF, Winter 2022
  * TA: Ludvig Liljenberg, Marina Wooden
- * 1/20/22
+ * 2/26/22
  * Creative Project #3
- * Description:
+ * Description: Stylesheet for amiibo searcher. Style is simplistic
+ * white background with gray cards for amiibo information
  */
 
 body {
@@ -14,11 +15,20 @@ body {
   box-sizing: border-box;
   background: rgb(247, 247, 247);
   font-size: 21px;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
   align-items: center;
   margin: 0;
+}
+
+body,
+.vertical-alignment {
+  flex-flow: column nowrap;
+}
+
+body,
+.vertical-alignment,
+.horizontal-alignment{
+  display: flex;
+  justify-content: center;
 }
 
 input {
@@ -38,16 +48,8 @@ button {
   padding: 14px;
 }
 
-.vertical-alignment {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-}
-
 .horizontal-alignment {
-  display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
 }
 
 #amiibo {
@@ -68,11 +70,14 @@ button {
 
 h1 {
   font-size: 32px;
-  font-weight: 700;
 }
 
 h2 {
   font-size: 24px;
+}
+
+h1,
+h2 {
   font-weight: 700;
 }
 
